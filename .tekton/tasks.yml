@@ -31,7 +31,11 @@ spec:
           # Delete files and directories starting with .. plus any other character
           rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
         fi
-name: nose
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: nose
 spec:
   workspaces:
     - name: source
