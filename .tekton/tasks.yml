@@ -31,3 +31,25 @@ spec:
           # Delete files and directories starting with .. plus any other character
           rm -rf "${WORKSPACE_SOURCE_PATH}"/..?*
         fi
+name: nose
+spec:
+  workspaces:
+    - name: source
+  params:
+    - name: args
+      description: Arguments to pass to nose
+      type: string
+      default: "-v"
+  steps:
+    - name: nosetests
+      image: python:3.9-slim
+      workingDir: $(workspaces.source.path)
+      script: |
+        #!/bin/bash
+        set -e
+        # Upgrade pip and install wheel package
+        python -m pip install --upgrade pip wheel
+        # Install dependencies from requirements.txt
+        pip install -r requirements.txt
+        # Run the tests with the specified arguments
+        nosetests $(params.args)
